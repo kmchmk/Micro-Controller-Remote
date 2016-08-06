@@ -692,7 +692,7 @@ public class GUI extends javax.swing.JFrame {
 
     void connectToClientAndListenToServer() {
         if (client.connectToServer()) {
-            btnConnect.setEnabled(false);
+            btnConnect.setBackground(Color.green);
             btnConnect.setToolTipText("Connected");
             server.startListening();
             System.out.println("Server is listening");
