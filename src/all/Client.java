@@ -33,8 +33,12 @@ public class Client {
         }
     }
 
-    void write(String move) throws IOException {
-        outToServer.writeBytes(move);
+    void write(String move) {
+        try {
+            outToServer.writeBytes(move);
+        } catch (IOException ex) {
+            System.out.println("You should first connetct to the vehicle.");
+        }
     }
 
     void closeConnection() {
@@ -42,7 +46,6 @@ public class Client {
         try {
             clientSocket.close();
         } catch (IOException ex) {
-
         }
     }
 

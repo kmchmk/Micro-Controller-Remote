@@ -25,7 +25,7 @@ public class Server {
                     while (true) {
                         Socket connectionSocket = serverSocket.accept();
                         BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-                        label.setText(inFromClient.readLine());
+                        label.setText(Integer.toString(Integer.parseInt(inFromClient.readLine())/224));
                     }
                 } catch (IOException ex) {
                     System.out.println("Couldn't Listen to the client");

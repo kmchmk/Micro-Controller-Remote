@@ -63,7 +63,7 @@ public class IpAddressGUI extends javax.swing.JDialog {
 
         jTextFieldport.setText("3000");
 
-        jTextFieldIP.setText("10.8.108.19");
+        jTextFieldIP.setText("192.168.43.176");
         jTextFieldIP.setToolTipText("IP address");
         jTextFieldIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

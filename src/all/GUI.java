@@ -1,9 +1,12 @@
 package all;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 public class GUI extends javax.swing.JFrame {
@@ -564,7 +567,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void btnConnectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
-        //connectToClientAndListenToServer();
+        connectToClientAndListenToServer();
     }//GEN-LAST:event_btnConnectMouseClicked
 
     private void btnConnectKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnConnectKeyPressed
@@ -604,7 +607,7 @@ public class GUI extends javax.swing.JFrame {
                         direction = direction.toLowerCase();
                     }
 
-                    //client.write(direction);
+                    client.write(direction);
                     System.out.println(direction);
                     model.addRow(new Object[]{model.getRowCount() + 1, direction});
                     previouseMove = direction;
@@ -641,11 +644,11 @@ public class GUI extends javax.swing.JFrame {
             }
         }
 
-        //client.write(direction);
+        client.write(direction);
         System.out.println(direction);
         model.addRow(new Object[]{model.getRowCount() + 1, direction});
-
         previouseMove = direction;
+
     }
 
     boolean check_Two_Keys_Pressed() {
