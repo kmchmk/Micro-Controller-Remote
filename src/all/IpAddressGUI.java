@@ -6,16 +6,15 @@
 package all;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
-/**
- *
- * @author චානක මධුරංග
- */
+
+
 public class IpAddressGUI extends javax.swing.JDialog {
 
     /**
      * Creates new form IpAddressGUI
+     * @param parent
+     * @param modal
      */
     public IpAddressGUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -24,7 +23,7 @@ public class IpAddressGUI extends javax.swing.JDialog {
 
         try {
             jTextField2.setText(InetAddress.getLocalHost().getHostAddress());
-        } catch (UnknownHostException ex) {
+        } catch (Exception ex) {
             jTextField2.setText("Couldn't find");
         }
 

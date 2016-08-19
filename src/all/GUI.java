@@ -1,12 +1,12 @@
 package all;
 
 import java.awt.Color;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 public class GUI extends javax.swing.JFrame {
@@ -22,15 +22,19 @@ public class GUI extends javax.swing.JFrame {
 
     String pressedTwoKeys;
     String pressedOneKey;
-    String previouseMove;
+    String previouseMove = "";//Changed later. Previously it was empty. check if something happens later.
 
+    BufferedImage image = null;
+
+//    int vehicle_length = 30;
+//    int vehicleWidth = 15;
     // boolean ShiftKeyPressed = false;
     public GUI(String ip, int vehiclePort, int remotePort) {
         initComponents();
         setLocationRelativeTo(null);
 
-        client = new Client(ip, vehiclePort);
-        server = new Server(remotePort, lblmsg);
+        client = new Client(ip, vehiclePort, this);
+        server = new Server(remotePort, lblmsg, this);
 
         logGUI = new Loggui();
         logGUI.setLocation(this.getLocation().x + this.getWidth(), this.getLocation().y);
@@ -47,6 +51,7 @@ public class GUI extends javax.swing.JFrame {
         lblRemotePort.setText(Integer.toString(remotePort));
 
         setMap();
+        drawVehicle(0);
     }
 
     void setMap() {
@@ -55,13 +60,54 @@ public class GUI extends javax.swing.JFrame {
 
         String[] directions = {"F", "B", "R", "L", "Shift"};
         boolean[] pressed = {false, false, false, false, false};
-        int[] keyCodes = {38, 40, 39, 37, 16};
+        int[] keyCodes = {38, 40, 39, 37, 32};
 
         for (int i = 0; i < keyCodes.length; i++) {
             moveMap.put(keyCodes[i], directions[i]);
             pressedMap.put(keyCodes[i], pressed[i]);
         }
 
+    }
+
+    public void drawVehicle(double gap) {
+        //change these variables
+        int vehicle_length = 30;
+        int vehicleWidth = 15;
+        double max_length_sensor_can_measure = 200;//cm
+
+        int imageWidth = jLabel3.getWidth();
+        int imageHeight = jLabel3.getHeight();
+        image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+
+        //draw map
+        for (int i = 0; i < imageHeight; i++) {
+            for (int j = 0; j < imageWidth; j++) {
+                image.setRGB(j, i, Color.white.getRGB());
+            }
+        }
+
+        //draw vehicle
+        for (int i = 0; i < vehicle_length; i++) {
+            for (int j = 0; j < vehicleWidth; j++) {
+                image.setRGB(((imageWidth - vehicleWidth) / 2) + j, ((imageHeight - vehicle_length) / 2) + i, Color.green.getRGB());
+            }
+        }
+
+        if (0 < gap & gap <= max_length_sensor_can_measure) {
+            double half_of_map = ((double) (getjLabel3().getHeight() - vehicle_length)) / 2;
+            int yy = (int) (half_of_map * (1 - (gap / max_length_sensor_can_measure)));
+
+            int length_object = 50;
+
+            int xx = (getjLabel3().getWidth() - length_object) / 2;
+            //draw object
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < length_object; j++) {
+                    image.setRGB(xx + j, yy + i, Color.red.getRGB());
+                }
+            }
+        }
+        jLabel3.setIcon(new ImageIcon(image));
     }
 
     /**
@@ -95,6 +141,7 @@ public class GUI extends javax.swing.JFrame {
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -426,29 +473,35 @@ public class GUI extends javax.swing.JFrame {
                                 .addComponent(jButton1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jRadioButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jToggleButton1))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -584,7 +637,7 @@ public class GUI extends javax.swing.JFrame {
 
     void press(int keyCode) {
 
-        if (keyCode == 16) {
+        if (keyCode == 32) {//space bar
             jRadioButton1.setSelected(true);
         }
 
@@ -603,7 +656,7 @@ public class GUI extends javax.swing.JFrame {
                 }
 
                 if (direction != null) {
-                    if ((boolean) pressedMap.get(16)) {
+                    if ((boolean) pressedMap.get(32)) {
                         direction = direction.toLowerCase();
                     }
 
@@ -619,7 +672,7 @@ public class GUI extends javax.swing.JFrame {
 
     void release(int keyCode) {
 
-        if (keyCode == 16) {
+        if (keyCode == 32) {//space bar
             jRadioButton2.setSelected(true);
         }
 
@@ -633,12 +686,13 @@ public class GUI extends javax.swing.JFrame {
             direction = pressedOneKey;
         } else {
             direction = "S";
-            if (previouseMove.equals("S")) {
+            
+            if ( previouseMove.equals("S")) {
                 return;
             }
         }
 
-        if ((boolean) pressedMap.get(16)) {
+        if ((boolean) pressedMap.get(32)) {
             if (!direction.equals("S")) {
                 direction = direction.toLowerCase();
             }
@@ -694,6 +748,7 @@ public class GUI extends javax.swing.JFrame {
     }
 
     void connectToClientAndListenToServer() {
+        System.out.println("Trying to connect... Please wait...");
         if (client.connectToServer()) {
             btnConnect.setBackground(Color.green);
             btnConnect.setToolTipText("Connected");
@@ -703,6 +758,10 @@ public class GUI extends javax.swing.JFrame {
             btnConnect.setToolTipText("Try again");
             btnConnect.setBackground(Color.red);
         }
+    }
+
+    public JLabel getjLabel3() {
+        return jLabel3;
     }
 
     /**
@@ -715,6 +774,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

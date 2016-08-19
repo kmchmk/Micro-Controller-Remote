@@ -1,5 +1,7 @@
 package all;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,13 +13,15 @@ public class Server {
 
     int port;
     JLabel label;
+    GUI gui;
 
-    public Server(int port, JLabel label) {
+    public Server(int port, JLabel label, GUI gui) {
         this.port = port;
         this.label = label;
+        this.gui = gui;
     }
 
-    void startListening() {
+    public void startListening() {
         new Thread() {
             public void run() {
                 try {
@@ -25,7 +29,9 @@ public class Server {
                     while (true) {
                         Socket connectionSocket = serverSocket.accept();
                         BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-                        label.setText(Integer.toString(Integer.parseInt(inFromClient.readLine())/224));
+                        int sensorReading = Integer.parseInt(inFromClient.readLine()) / 224;
+                        label.setText(Integer.toString(sensorReading));
+                        gui.drawVehicle(sensorReading);
                     }
                 } catch (IOException ex) {
                     System.out.println("Couldn't Listen to the client");
