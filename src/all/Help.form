@@ -53,7 +53,7 @@
             <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="There are 8 directions with two velocities.&#xa;&#xa;&#x9;F/f - Forward&#xa;&#x9;B/b - Backward&#xa;&#x9;L/l - Left&#xa;&#x9;R/r - Right&#xa;&#x9;FL/fl - Forward + Left&#xa;&#x9;FR/fr - Forward + Right&#xa;&#x9;BL/bl - Backward + Left&#xa;&#x9;Br/br - Backward + Right&#xa;&#xa;(Capital letters indicate low speed and&#xa;simple letters indicate high speed.)&#xa;&#xa;Use Shift key to change velocity."/>
+            <Property name="text" type="java.lang.String" value="There are 8 directions with two velocities.&#xa;&#xa;&#x9;F/f - Forward&#xa;&#x9;B/b - Backward&#xa;&#x9;L/l - Left&#xa;&#x9;R/r - Right&#xa;&#x9;A/a - Forward + Left&#xa;&#x9;E/e - Forward + Right&#xa;&#x9;C/c - Backward + Left&#xa;&#x9;D/d - Backward + Right&#xa;&#xa;(Capital letters indicate low speed and&#xa;simple letters indicate high speed.)&#xa;&#xa;Use Shift key to change velocity."/>
           </Properties>
         </Component>
       </SubComponents>

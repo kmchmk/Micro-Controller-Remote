@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package all;
 
 import java.net.InetAddress;
-
-
 
 public class IpAddressGUI extends javax.swing.JDialog {
 
     /**
      * Creates new form IpAddressGUI
+     *
      * @param parent
      * @param modal
      */
@@ -62,7 +56,7 @@ public class IpAddressGUI extends javax.swing.JDialog {
 
         jTextFieldport.setText("3000");
 
-        jTextFieldIP.setText("192.168.43.176");
+        jTextFieldIP.setText("192.168.43.156");
         jTextFieldIP.setToolTipText("IP address");
         jTextFieldIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,7 +165,6 @@ public class IpAddressGUI extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
         new GUI(jTextFieldIP.getText(), Integer.parseInt(jTextFieldport.getText()), Integer.parseInt(jTextField1.getText())).setVisible(true);
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextFieldIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIPActionPerformed

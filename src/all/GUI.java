@@ -26,9 +26,9 @@ public class GUI extends javax.swing.JFrame {
 
     BufferedImage image = null;
 
-//    int vehicle_length = 30;
-//    int vehicleWidth = 15;
-    // boolean ShiftKeyPressed = false;
+    double gap1 = Integer.MAX_VALUE;
+    double gap2 = Integer.MIN_VALUE;
+
     public GUI(String ip, int vehiclePort, int remotePort) {
         initComponents();
         setLocationRelativeTo(null);
@@ -51,7 +51,7 @@ public class GUI extends javax.swing.JFrame {
         lblRemotePort.setText(Integer.toString(remotePort));
 
         setMap();
-        drawVehicle(0);
+        drawVehicle(0, 0);
     }
 
     void setMap() {
@@ -69,11 +69,11 @@ public class GUI extends javax.swing.JFrame {
 
     }
 
-    public void drawVehicle(double gap) {
+    public void drawVehicle(double gap1, double gap2) {
         //change these variables
         int vehicle_length = 30;
         int vehicleWidth = 15;
-        double max_length_sensor_can_measure = 200;//cm
+        double max_length_sensor_can_measure = 50;//cm
 
         int imageWidth = jLabel3.getWidth();
         int imageHeight = jLabel3.getHeight();
@@ -92,18 +92,29 @@ public class GUI extends javax.swing.JFrame {
                 image.setRGB(((imageWidth - vehicleWidth) / 2) + j, ((imageHeight - vehicle_length) / 2) + i, Color.green.getRGB());
             }
         }
+        double half_of_map;
+        int length_object = 10;
+        int width_object = 10;
+        int xx = (getjLabel3().getWidth() - length_object) / 2;
+        half_of_map = ((double) (getjLabel3().getHeight() - vehicle_length)) / 2;
 
-        if (0 < gap & gap <= max_length_sensor_can_measure) {
-            double half_of_map = ((double) (getjLabel3().getHeight() - vehicle_length)) / 2;
-            int yy = (int) (half_of_map * (1 - (gap / max_length_sensor_can_measure)));
+        if (0 < gap1 & gap1 <= max_length_sensor_can_measure) {
+            int yy1 = (int) (half_of_map * (1 - (gap1 / max_length_sensor_can_measure)));
 
-            int length_object = 50;
-
-            int xx = (getjLabel3().getWidth() - length_object) / 2;
-            //draw object
-            for (int i = 0; i < 10; i++) {
+            //draw first object
+            for (int i = 0; i < width_object; i++) {
                 for (int j = 0; j < length_object; j++) {
-                    image.setRGB(xx + j, yy + i, Color.red.getRGB());
+                    image.setRGB(xx + j, yy1 + i, Color.red.getRGB());
+                }
+            }
+        }
+
+        if (0 < gap2 & gap2 <= max_length_sensor_can_measure) {
+            //draw second object
+            for (int i = 0; i < width_object; i++) {
+                int yy2 = imageHeight - (int) (half_of_map * (1 - (gap2 / max_length_sensor_can_measure)));
+                for (int j = 0; j < length_object; j++) {
+                    image.setRGB(xx + j, yy2 - i, Color.red.getRGB());
                 }
             }
         }
@@ -142,6 +153,7 @@ public class GUI extends javax.swing.JFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jToggleButton2 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -446,6 +458,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton2.setText("On");
+        jToggleButton2.setFocusable(false);
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -470,7 +490,10 @@ public class GUI extends javax.swing.JFrame {
                                 .addComponent(jToggleButton1))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jButton1)))
+                                .addComponent(jButton1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jToggleButton2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
@@ -495,6 +518,8 @@ public class GUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jRadioButton2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jToggleButton2)
+                                .addGap(28, 28, 28)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jToggleButton1))
@@ -635,6 +660,17 @@ public class GUI extends javax.swing.JFrame {
         new Help(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        if (jToggleButton2.getText().equals("On")) {
+            client.write("N");
+            jToggleButton2.setText("Off");
+        } else if (jToggleButton2.getText().equals("Off")) {
+            client.write("O");
+            jToggleButton2.setText("On");
+        }
+
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
     void press(int keyCode) {
 
         if (keyCode == 32) {//space bar
@@ -659,7 +695,7 @@ public class GUI extends javax.swing.JFrame {
                     if ((boolean) pressedMap.get(32)) {
                         direction = direction.toLowerCase();
                     }
-
+                    
                     client.write(direction);
                     System.out.println(direction);
                     model.addRow(new Object[]{model.getRowCount() + 1, direction});
@@ -686,8 +722,8 @@ public class GUI extends javax.swing.JFrame {
             direction = pressedOneKey;
         } else {
             direction = "S";
-            
-            if ( previouseMove.equals("S")) {
+
+            if (previouseMove.equals("S")) {
                 return;
             }
         }
@@ -707,16 +743,16 @@ public class GUI extends javax.swing.JFrame {
 
     boolean check_Two_Keys_Pressed() {
         if ((boolean) pressedMap.get(38) && (boolean) pressedMap.get(37)) {
-            pressedTwoKeys = "FL";
+            pressedTwoKeys = "A";//FL
             return true;
         } else if ((boolean) pressedMap.get(38) && (boolean) pressedMap.get(39)) {
-            pressedTwoKeys = "FR";
+            pressedTwoKeys = "E";//FR
             return true;
         } else if ((boolean) pressedMap.get(40) && (boolean) pressedMap.get(39)) {
-            pressedTwoKeys = "BR";
+            pressedTwoKeys = "D";//BR
             return true;
         } else if ((boolean) pressedMap.get(40) && (boolean) pressedMap.get(37)) {
-            pressedTwoKeys = "BL";
+            pressedTwoKeys = "C";//BL
             return true;
         } else {
             return false;
@@ -782,6 +818,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JLabel jlabel12;
     private javax.swing.JLabel lblRemoteIP;
     private javax.swing.JLabel lblRemotePort;

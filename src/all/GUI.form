@@ -60,6 +60,10 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jToggleButton2" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
@@ -89,6 +93,8 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jToggleButton2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                               <Component id="jButton1" min="-2" pref="11" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jToggleButton1" min="-2" max="-2" attributes="0"/>
@@ -463,6 +469,15 @@
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="jToggleButton2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="On"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton2ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

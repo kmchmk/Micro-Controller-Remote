@@ -1,7 +1,5 @@
 package all;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,16 +27,23 @@ public class Server {
                     while (true) {
                         Socket connectionSocket = serverSocket.accept();
                         BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-                        int sensorReading = Integer.parseInt(inFromClient.readLine()) / 224;
-                        label.setText(Integer.toString(sensorReading));
-                        gui.drawVehicle(sensorReading);
+                        String sensorReading = inFromClient.readLine();
+
+                        String[] temp = sensorReading.split(",");
+                        double gap1 = (Double.parseDouble(temp[0]) - 1550) / 58;
+                        double gap2 = (Double.parseDouble(temp[1]) - 1550) / 58;
+
+                        gui.gap1 = gap1;
+                        gui.gap2 = gap2;
+
+                        label.setText(Integer.toString((int) gap1) + " | " + Integer.toString((int) gap2));
+                        gui.drawVehicle(gap1, gap2);
+
                     }
                 } catch (IOException ex) {
                     System.out.println("Couldn't Listen to the client");
                 }
             }
         }.start();
-
     }
-
 }

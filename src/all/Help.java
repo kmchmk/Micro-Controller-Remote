@@ -25,7 +25,7 @@ public class Help extends javax.swing.JDialog {
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("There are 8 directions with two velocities.\n\n\tF/f - Forward\n\tB/b - Backward\n\tL/l - Left\n\tR/r - Right\n\tFL/fl - Forward + Left\n\tFR/fr - Forward + Right\n\tBL/bl - Backward + Left\n\tBr/br - Backward + Right\n\n(Capital letters indicate low speed and\nsimple letters indicate high speed.)\n\nUse Shift key to change velocity.");
+        jTextArea1.setText("There are 8 directions with two velocities.\n\n\tF/f - Forward\n\tB/b - Backward\n\tL/l - Left\n\tR/r - Right\n\tA/a - Forward + Left\n\tE/e - Forward + Right\n\tC/c - Backward + Left\n\tD/d - Backward + Right\n\n(Capital letters indicate low speed and\nsimple letters indicate high speed.)\n\nUse Shift key to change velocity.");
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
